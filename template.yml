@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: German phone number parser
+Resources:
+  LambdaFunction:
+    Type: AWS::Serverless::Function
+    Description: 'Lambda function processes phone numbers'
+    Properties:
+      FunctionName: NumberParser
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      CodeUri: GEParser/
+      Policies:
+        DynamoDBCrudPolicy:
+          TableName: !Ref DynamoDBTable
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /
+            Method: POST
+  DynamoDBTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: GENumbers
+Outputs:
+  EndpointUrl:
+    Description: 'REST endpoint URL'
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/dev'
