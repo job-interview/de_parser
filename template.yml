@@ -2,11 +2,11 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: German phone number parser
 Resources:
-  LambdaFunction:
+  NumberParserFunction:
     Type: AWS::Serverless::Function
     Description: 'Lambda function processes phone numbers'
     Properties:
-      FunctionName: NumberParser
+      FunctionName: NumberParserFunction
       Handler: app.lambda_handler
       Runtime: python3.9
       CodeUri: GEParser/
@@ -18,7 +18,7 @@ Resources:
           Type: Api
           Properties:
             Path: /
-            Method: POST
+            Method: GET
   DynamoDBTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
