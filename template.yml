@@ -10,6 +10,7 @@ Resources:
       Handler: app.lambda_handler
       Runtime: python3.9
       CodeUri: GEParser/
+      Timeout: 10
       Policies:
         DynamoDBCrudPolicy:
           TableName: !Ref DynamoDBTable
@@ -18,7 +19,9 @@ Resources:
           Type: Api
           Properties:
             Path: /
-            Method: GET
+            Method: POST
+      Environment:
+        TABLE_NAME: !Ref DynamoDBTable
   DynamoDBTable:
     Type: AWS::Serverless::SimpleTable
     Properties:

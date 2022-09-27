@@ -1,9 +1,11 @@
 import re
 
+MINIMUM_LINE_LENGTH=14
+
 def lambda_handler(event, context):
-    print('Inside SAM!')
+    print('Context: ', context.aws_request_id)
     lines = event['body'].splitlines()
-    german_nos = {parse_german_no(line) for line in lines}
+    german_nos = {_parse_german_no(line) for line in lines}
     return {
         'statusCode': 200,
         'body': list(german_nos)
@@ -16,19 +18,14 @@ def _normalize_digits_only(number:str) -> str:
     Returns the normalized string version of the phone number.
     """
     number = number.strip()
-    if len(number)<14: return None
+    if len(number)<MINIMUM_LINE_LENGTH: return None
     plus_prefix = "+" if number.startswith("+") else ""
-    normalized_digits = ""
-    for char_ in number:
-        isdigit = char_.isdigit()
-        if isdigit:
-            normalized_digits += char_
-        else:
-            continue
+    char_list = [char_ for char_ in number if char_.isdigit()]
+    normalized_digits = ''.join(char_list)
     return plus_prefix + normalized_digits
 
 
-def parse_german_no(line):
+def _parse_german_no(line):
     telephone_no = _normalize_digits_only(line)
     if telephone_no and _is_german(telephone_no):
         return telephone_no
