@@ -11,7 +11,7 @@ services:
       - $PWD:$PWD
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: $PWD
-    command: ['/bin/bash', "./entrypoint.linux.sh"]
+    command: ['/bin/bash', "./entrypoint.mac.sh"]
     ports:
       - "3000:3000"
     networks:
