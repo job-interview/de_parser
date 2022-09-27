@@ -11,11 +11,28 @@ services:
       - $PWD:$PWD
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: $PWD
-    command: ['/bin/bash', "./entrypoint.sh"]
+    command: ['/bin/bash', "./entrypoint.linux.sh"]
     ports:
       - "3000:3000"
     networks:
       - "backend"
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+
+  dynamodb-admin:
+    image: aaronshaf/dynamodb-admin
+    ports:
+      - "8001:8001"
+    environment:
+      DYNAMO_ENDPOINT: "http://dynamodb-local:8000"
+      AWS_REGION: "us-west-2"
+      AWS_ACCESS_KEY_ID: local
+      AWS_SECRET_ACCESS_KEY: local
+    depends_on:
+      - dynamodb-local
 
 networks:
   backend:
