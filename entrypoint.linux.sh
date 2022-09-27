@@ -1,0 +1,1 @@
+sam local start-api -p 3000 --host 0.0.0.0 --docker-network aws_backend --container-host 172.17.0.1 --container-host-interface 0.0.0.0
