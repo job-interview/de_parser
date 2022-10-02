@@ -24,7 +24,7 @@ class NumberProcessor:
         table = self._get_table_client()
         try:
             table.put_item(
-                Item={"job_id": job_id, "numbers":numbers },
+                Item={"PK": "job_id","SK":job_id, "numbers":numbers },
                 ConditionExpression="attribute_not_exists(PK)",
             )
         except ClientError as e:
