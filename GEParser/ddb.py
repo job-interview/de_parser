@@ -18,9 +18,10 @@ logger.addHandler(handler)
 class NumberProcessor:
     def process(self, job_id, lines):
         german_nos = list({self._parse_german_no(line) for line in lines})
-        job_id = self._put_record(job_id, german_nos)
+        job_id = self._put_results(job_id, german_nos)
+        self._update_job_list(job_id)
         return job_id
-    def _put_record(self, job_id, numbers):
+    def _put_results(self, job_id, numbers):
         table = self._get_table_client()
         try:
             table.put_item(
@@ -39,6 +40,19 @@ class NumberProcessor:
             raise e
         else:
             logger.warning("Numbers saved! JobId: {job_id}".format(job_id=job_id))
+            return job_id
+    
+    def _update_job_list(self, job_id):
+        table = self._get_table_client()
+        try:
+            table.put_item(
+                Item={"PK": "job","SK":job_id}
+            )
+        except ClientError as e:
+            logger.exception("DynamoDB Client Error!")
+            raise e
+        else:
+            logger.warning("JobId: {job_id} added to the processed jobs list".format(job_id=job_id))
             return job_id
     def _get_table_client(self):
         is_local = os.environ.get('AWS_SAM_LOCAL')

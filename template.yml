@@ -27,14 +27,37 @@ Resources:
         DynamoDBCrudPolicy:
           TableName: !Ref DynamoDBTable
       Events:
-        ApiEvent:
+        JobAddEvent:
           Type: Api
           Properties:
-            Path: /
+            Path: /job
             Method: POST
+            RestApiId:
+              Ref: JobAPI
+        JobGetEvent:
+          Type: Api
+          Properties:
+            Path: /job/{job_id}
+            Method: GET
+            RestApiId:
+              Ref: JobAPI
+        JobDeleteEvent:
+          Type: Api
+          Properties:
+            Path: /job/{job_id}
+            Method: DELETE
+            RestApiId:
+              Ref: JobAPI
+        JobListEvent:
+          Type: Api
+          Properties:
+            Path: /jobs
+            Method: GET
+            RestApiId:
+              Ref: JobAPI
       Environment:
         Variables:
-          TABLE_NAME: DENumbers
+          TABLE_NAME: !Ref TableName
           DDB_ENDPOINT_URL: http://dynamodb-local:8000
   
   DynamoDBTable:

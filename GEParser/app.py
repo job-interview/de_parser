@@ -1,21 +1,31 @@
 import json
 from ddb import NumberProcessor
 
-MINIMUM_LINE_LENGTH=14
+MINIMUM_LINE_LENGTH = 14
 
 
 def lambda_handler(event, context):
-    # if event["httpMethod"] == "GET":
+    if event["httpMethod"] == "GET" and event['resource']=="/job":
     #     response = get_cause_details(event, context)
     #     return response
-    if event["httpMethod"] == "POST":
+        pass
+    if event["httpMethod"] == "DELETE" and event['resource']=="/job":
+    #     response = get_cause_details(event, context)
+    #     return response
+        pass
+    if event["httpMethod"] == "GET" and event['resource']=="/jobs":
+    #     response = get_cause_details(event, context)
+    #     return response
+        pass
+    if event["httpMethod"] == "POST" and event['resource']=="/job":
         job_id = context.aws_request_id
-        lines = event['body'].splitlines()
+        lines = event["body"].splitlines()
         number_processor = NumberProcessor()
-        job_id =  number_processor.process(job_id, lines)
+        job_id = number_processor.process(job_id, lines)
         return {
-            'statusCode': 200,
-            'body': json.dumps({'job_id':job_id})
+            "statusCode": 200,
+            "body": json.dumps({"job_id": job_id}),
+            "headers": {"Content-Type": "application/json"},
         }
     # if event["httpMethod"] == "PUT":
     #     response = put_cause_details(event, context)
