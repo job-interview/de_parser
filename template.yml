@@ -23,15 +23,12 @@ Resources:
             Method: POST
       Environment:
         Variables:
-          TABLE_NAME: GENumbers
+          TABLE_NAME: DENumbers
           DDB_ENDPOINT_URL: http://dynamodb-local:8000
-          AWS_DEFAULT_REGION: us-east-1
-          AWS_ACCESS_KEY_ID: local
-          AWS_SECRET_ACCESS_KEY: local 
   DynamoDBTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
-      TableName: GENumbers
+      TableName: DENumbers
 Outputs:
   EndpointUrl:
     Description: 'REST endpoint URL'

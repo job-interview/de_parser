@@ -41,6 +41,15 @@ services:
       AWS_SECRET_ACCESS_KEY: local 
     depends_on:
       - dynamodb-local
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: "swagger-ui"
+    ports:
+      - "8002:8080"
+    volumes:
+      - ./jobs-openapi.yml:/swagger.yml
+    environment:
+      SWAGGER_JSON: /swagger.yml
 
 networks:
   backend:

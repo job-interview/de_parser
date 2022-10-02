@@ -1,0 +1,158 @@
+openapi: 3.0.3
+info:
+  title: DE Parser - OpenAPI 3.0
+  description: |-
+    German phone number parser
+  contact:
+    email: k.hasan.rajib@gmail.com
+  version: 0.3.0
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: jobs
+    description: Phone number parsing jobs
+
+x-amazon-apigateway-request-validators:
+  all:
+    validateRequestBody: true
+    validateRequestParameters: true
+  params-only:
+    validateRequestBody: false
+    validateRequestParameters: true
+x-amazon-apigateway-minimum-compression-size: 1024
+
+paths:
+  /jobs:
+    get:
+      tags:
+        - jobs
+      summary: Gets all job ids
+      operationId: getJobs
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_ids:
+                    type: array
+                    items:
+                      type: string
+        '405':
+          description: Invalid input
+      x-amazon-apigateway-integration:
+        uri:
+          'Fn::Sub': >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${NumberParserFunction.Arn}/invocations
+        httpMethod: POST
+        passthroughBehavior: WHEN_NO_TEMPLATES
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+      x-amazon-apigateway-request-validator: all
+  /job:
+    post:
+      tags:
+        - jobs
+      summary: Add a new job
+      operationId: addJob
+      requestBody:
+        description: Create a number processing job
+        content:
+          text/plain:
+            schema:
+              type: string
+              format: binary
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+        '405':
+          description: Invalid input
+      x-amazon-apigateway-integration:
+        uri:
+          'Fn::Sub': >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${NumberParserFunction.Arn}/invocations
+        httpMethod: POST
+        passthroughBehavior: WHEN_NO_TEMPLATES
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+      x-amazon-apigateway-request-validator: all
+  /job/{job_id}:
+    get:
+      tags:
+        - jobs
+      summary: Find job results by ID
+      description: Returns a single job results
+      operationId: getJobById
+      parameters:
+        - name: job_id
+          in: path
+          description: results of job to return
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  number:
+                    type: array
+                    items:
+                      type: string
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Job not found
+      x-amazon-apigateway-integration:
+        uri:
+          'Fn::Sub': >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${NumberParserFunction.Arn}/invocations
+        httpMethod: POST
+        passthroughBehavior: WHEN_NO_TEMPLATES
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+      x-amazon-apigateway-request-validator: all
+
+    delete:
+      tags:
+        - jobs
+      summary: Deletes a job
+      description: delete a job
+      operationId: deleteJob
+      parameters:
+        - name: job_id
+          in: path
+          description: Job id to delete
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '400':
+          description: Invalid job id
+      x-amazon-apigateway-integration:
+        uri:
+          'Fn::Sub': >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${NumberParserFunction.Arn}/invocations
+        httpMethod: POST
+        passthroughBehavior: WHEN_NO_TEMPLATES
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+      x-amazon-apigateway-request-validator: all
