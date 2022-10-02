@@ -10,7 +10,8 @@ Resources:
       Handler: app.lambda_handler
       Runtime: python3.9
       CodeUri: GEParser/
-      Timeout: 10
+      MemorySize: 512
+      Timeout: 20
       Policies:
         DynamoDBCrudPolicy:
           TableName: !Ref DynamoDBTable
@@ -21,7 +22,12 @@ Resources:
             Path: /
             Method: POST
       Environment:
-        TABLE_NAME: !Ref DynamoDBTable
+        Variables:
+          TABLE_NAME: GENumbers
+          DDB_ENDPOINT_URL: http://dynamodb-local:8000
+          AWS_DEFAULT_REGION: us-east-1
+          AWS_ACCESS_KEY_ID: local
+          AWS_SECRET_ACCESS_KEY: local 
   DynamoDBTable:
     Type: AWS::Serverless::SimpleTable
     Properties:

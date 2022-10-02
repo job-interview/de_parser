@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   sam:
     build: .
@@ -14,6 +14,10 @@ services:
     command: ['/bin/bash', "./entrypoint.mac.sh"]
     ports:
       - "3000:3000"
+    environment:
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: local
+      AWS_SECRET_ACCESS_KEY: local
     networks:
       - "backend"
   dynamodb-local:
@@ -31,7 +35,10 @@ services:
     networks:
       - "backend"
     environment:
-      DYNAMO_ENDPOINT: "http://dynamodb-local:8000"
+      DYNAMO_ENDPOINT: http://dynamodb-local:8000
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: local
+      AWS_SECRET_ACCESS_KEY: local 
     depends_on:
       - dynamodb-local
 

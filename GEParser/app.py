@@ -1,14 +1,16 @@
-import re
+import json
+from ddb import NumberProcessor
 
 MINIMUM_LINE_LENGTH=14
 
 def lambda_handler(event, context):
-    print('Context: ', context.aws_request_id)
+    job_id = context.aws_request_id
     lines = event['body'].splitlines()
-    german_nos = {_parse_german_no(line) for line in lines}
+    number_processor = NumberProcessor()
+    job_id =  number_processor.process(job_id, lines)
     return {
         'statusCode': 200,
-        'body': list(german_nos)
+        'body': json.dumps({'job_id':job_id})
     }
 
 def _normalize_digits_only(number:str) -> str:
@@ -32,6 +34,7 @@ def _parse_german_no(line):
 
 
 def _is_german(telephone_no: str) -> bool:
+    import re
     p1 = re.compile('^0049\d{11}$')
     p2 = re.compile('^\+49\d{11}$')
 
