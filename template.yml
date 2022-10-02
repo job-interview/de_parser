@@ -1,6 +1,17 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: German phone number parser
+
+Globals:
+  Function:
+    Timeout: 30
+
+Parameters:
+  TableName:
+    Type: String
+    Default: DENumbers
+    Description: DynamoDB table name
+
 Resources:
   NumberParserFunction:
     Type: AWS::Serverless::Function
@@ -25,10 +36,34 @@ Resources:
         Variables:
           TABLE_NAME: DENumbers
           DDB_ENDPOINT_URL: http://dynamodb-local:8000
+  
   DynamoDBTable:
-    Type: AWS::Serverless::SimpleTable
+    Type: AWS::DynamoDB::Table
     Properties:
-      TableName: DENumbers
+      TableName: !Ref TableName
+      KeySchema:
+      - AttributeName: PK
+        KeyType: HASH
+      - AttributeName: SK
+        KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+      - AttributeName: PK
+        AttributeType: S
+      - AttributeName: SK
+        AttributeType: S
+  
+  JobAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: dev
+      EndpointConfiguration: REGIONAL
+      OpenApiVersion: 3.0.3
+      DefinitionBody:
+        'Fn::Transform':
+          Name: 'AWS::Include'
+          Parameters:
+            Location: jobs-openapi.yml
 Outputs:
   EndpointUrl:
     Description: 'REST endpoint URL'
