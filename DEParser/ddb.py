@@ -25,6 +25,22 @@ class NumberProcessor:
         job_id = self._put_results(job_id, german_nos)
         self._update_job_list(job_id)
         return job_id
+    def get_results(self, job_id):
+        table = self._get_table_client()
+        try:
+            data = table.get_item(Key={"PK":"job_id", "SK": job_id})
+            if not data.get("Item"):
+                raise KeyError
+
+        except ClientError as e:
+            logger.exception("DynamoDB Client Error!")
+            raise e
+        except KeyError as e:
+            logger.warning(
+                "Job not found at DB! JobId: {JobId}".format(JobId=job_id)
+            )
+            return None
+        return data.get("Item")
 
     def _put_results(self, job_id, numbers):
         table = self._get_table_client()
