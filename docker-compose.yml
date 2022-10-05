@@ -17,6 +17,8 @@ services:
       - "3000:3000"
     networks:
       - "backend"
+    depends_on:
+      - dynamodb-local
   dynamodb-local:
     image: amazon/dynamodb-local:latest
     container_name: dynamodb-local
