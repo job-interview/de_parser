@@ -9,15 +9,12 @@ services:
       - DOCKER_HOST=unix:///var/run/docker.sock
     volumes:
       - $PWD:$PWD
+      - ./.aws/:/root/.aws:ro
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: $PWD
     command: ['/bin/bash', "./entrypoint.mac.sh"]
     ports:
       - "3000:3000"
-    environment:
-      AWS_DEFAULT_REGION: us-east-1
-      AWS_ACCESS_KEY_ID: local
-      AWS_SECRET_ACCESS_KEY: local
     networks:
       - "backend"
   dynamodb-local:
