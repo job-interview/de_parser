@@ -9,12 +9,12 @@ A simple serverless api to parser German phone numbers
 
 ### Run locally
 
-To run it locally, following tool is requried
-* Docker - [Install Docker](https://www.docker.com/products/docker-desktop/)
+To run it locally take following steps:
+* [Install Docker](https://www.docker.com/products/docker-desktop/)
 
-- Update the `docker-compose.yml` entrypoint at line 15 based on the operating system being and Run `docker compose up --build`
-- visit `http://localhost:8001` for DynamoDB UI
-- visit `http://localhost:8002` for SwaggerUI
+- Update the `docker-compose.yml` entrypoint at line 15 based on the operating system being(default is mac) and Run `docker compose up --build`
+- visit `http://localhost:8001` for DynamoDB UI to check nosql data store
+- visit `http://localhost:8002` for SwaggerUI to test the api
 
 ### Run tests
 
