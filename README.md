@@ -1,6 +1,6 @@
 ## DEParser
 
-A simple serverless api to parser German phone numbers
+A simple serverless api to parse German phone numbers
 
 ### Tech stack
 - AWS Lambda
