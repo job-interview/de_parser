@@ -1,0 +1,116 @@
+{
+    "body": "\n\n\n\n00992159 5 9  5 9 0 9\n\n\n34169  93 1  1 18  8\n\n\n\n992162 91  7 7  56  70\n341753  59 0 4 95\n+34152 4  14  99 0 08\n33153  229  0  0  2  \n\n\n\n\n\n\n+31165 6 7 841  8 7  \n33170  4  9 3 01 3 29\n0031163 9  3  54  27 2  \n212178  277 9 0  8 9  6 \n33176  32  306 7 \n+11697 1  74 5  3  26  \n0046165  68  9 2  3 21 8  \n0031159418  9 3  8\n\n\n0034154 2 3  49  2 4  \n1178  8  9  04 8  0  99\n00461727  3 0 080 2 3  \n\n\n\n\n002121626  2 99  55  4 3  \n33172  83  1 1  7 9 \n\n+36168  8  34 9 1 7 5 \n+992153  64 9  7  6  5  4  \n\n\n003316217  0  8 70 9 \n0036175  3 7352 47 \n+992172  5  4 7  0  3 5 4 \n\n\n46159 7 9 3 5  09 4\n\n0036175  8  3  24  83 4\n\n49152 2 5  6 3 8 4 75\n+11725 60  8 1 7 \n+46159  8 4  38 57  6\n+331540  81 369 3 6\n\n\n0036178  73  0 4320  \n361788  12  2  17  9 \n00331740  0  2 4  38  4  \n\n+49176 2  1 5 00 8  \n002121677  4 5  31 6  2 \n+2121548 0521 8  1 3  \n+33179 758 7  02 \n\n34164  5 3 666 2 \n\n\n\n\n+21215032  2  221\n\n\n\n\n\n34168  3 4 1 9 7 6 8\n\n+3115452 31  6 1\n\n212161  0  3 5  7  0  2  \n+212163839  5 24 3  \n\n34178  93 21  72  12\n00992159150  5  2  68  8 \n\n+461553 6 2  4  1 48\n\n\n\n001160 44 3 3  7 08 \n0033159 19 4  75 07  \n\n0049168 0 08  95  4  3",
+    "headers": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Connection": "keep-alive",
+        "Content-Length": "1135",
+        "Content-Type": "text/plain",
+        "Host": "localhost:3000",
+        "Origin": "http://localhost:8002",
+        "Referer": "http://localhost:8002/",
+        "Sec-Ch-Ua": "\"Chromium\";v=\"106\", \"Google Chrome\";v=\"106\", \"Not;A=Brand\";v=\"99\"",
+        "Sec-Ch-Ua-Mobile": "?0",
+        "Sec-Ch-Ua-Platform": "\"macOS\"",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-site",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36",
+        "X-Forwarded-Port": "3000",
+        "X-Forwarded-Proto": "http"
+    },
+    "httpMethod": "POST",
+    "isBase64Encoded": false,
+    "multiValueHeaders": {
+        "Accept": [
+            "application/json"
+        ],
+        "Accept-Encoding": [
+            "gzip, deflate, br"
+        ],
+        "Accept-Language": [
+            "en-US,en;q=0.9"
+        ],
+        "Connection": [
+            "keep-alive"
+        ],
+        "Content-Length": [
+            "1135"
+        ],
+        "Content-Type": [
+            "text/plain"
+        ],
+        "Host": [
+            "localhost:3000"
+        ],
+        "Origin": [
+            "http://localhost:8002"
+        ],
+        "Referer": [
+            "http://localhost:8002/"
+        ],
+        "Sec-Ch-Ua": [
+            "\"Chromium\";v=\"106\", \"Google Chrome\";v=\"106\", \"Not;A=Brand\";v=\"99\""
+        ],
+        "Sec-Ch-Ua-Mobile": [
+            "?0"
+        ],
+        "Sec-Ch-Ua-Platform": [
+            "\"macOS\""
+        ],
+        "Sec-Fetch-Dest": [
+            "empty"
+        ],
+        "Sec-Fetch-Mode": [
+            "cors"
+        ],
+        "Sec-Fetch-Site": [
+            "same-site"
+        ],
+        "User-Agent": [
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+        ],
+        "X-Forwarded-Port": [
+            "3000"
+        ],
+        "X-Forwarded-Proto": [
+            "http"
+        ]
+    },
+    "multiValueQueryStringParameters": null,
+    "path": "/job",
+    "pathParameters": null,
+    "queryStringParameters": null,
+    "requestContext": {
+        "accountId": "123456789012",
+        "apiId": "1234567890",
+        "domainName": "localhost:3000",
+        "extendedRequestId": null,
+        "httpMethod": "POST",
+        "identity": {
+            "accountId": null,
+            "apiKey": null,
+            "caller": null,
+            "cognitoAuthenticationProvider": null,
+            "cognitoAuthenticationType": null,
+            "cognitoIdentityPoolId": null,
+            "sourceIp": "172.21.0.1",
+            "user": null,
+            "userAgent": "Custom User Agent String",
+            "userArn": null
+        },
+        "operationName": "addJob",
+        "path": "/job",
+        "protocol": "HTTP/1.1",
+        "requestId": "6464d8d1-c7dc-4535-9e70-faca0bd8a26a",
+        "requestTime": "13/Oct/2022:08:23:42 +0000",
+        "requestTimeEpoch": 1665649422,
+        "resourceId": "123456",
+        "resourcePath": "/job",
+        "stage": "dev"
+    },
+    "resource": "/job",
+    "stageVariables": null,
+    "version": "1.0"
+}

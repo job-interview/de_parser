@@ -1,29 +1,97 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: German phone number parser
+
+Globals:
+  Function:
+    Timeout: 30
+
+Parameters:
+  TableName:
+    Type: String
+    Default: DENumbers
+    Description: DynamoDB table name
+
 Resources:
-  LambdaFunction:
+  NumberParserFunction:
     Type: AWS::Serverless::Function
     Description: 'Lambda function processes phone numbers'
     Properties:
-      FunctionName: NumberParser
+      FunctionName: NumberParserFunction
       Handler: app.lambda_handler
       Runtime: python3.9
-      CodeUri: GEParser/
+      CodeUri: DEParser/
+      MemorySize: 512
+      Timeout: 20
       Policies:
         DynamoDBCrudPolicy:
           TableName: !Ref DynamoDBTable
       Events:
-        ApiEvent:
+        JobAddEvent:
           Type: Api
           Properties:
-            Path: /
+            Path: /job
             Method: POST
+            RestApiId:
+              Ref: JobAPI
+        JobGetEvent:
+          Type: Api
+          Properties:
+            Path: /job/{job_id}
+            Method: GET
+            RestApiId:
+              Ref: JobAPI
+        JobDeleteEvent:
+          Type: Api
+          Properties:
+            Path: /job/{job_id}
+            Method: DELETE
+            RestApiId:
+              Ref: JobAPI
+        JobListEvent:
+          Type: Api
+          Properties:
+            Path: /jobs
+            Method: GET
+            RestApiId:
+              Ref: JobAPI
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref TableName
+          DDB_ENDPOINT_URL: http://dynamodb-local:8000
+  
   DynamoDBTable:
-    Type: AWS::Serverless::SimpleTable
+    Type: AWS::DynamoDB::Table
     Properties:
-      TableName: GENumbers
+      TableName: !Ref TableName
+      KeySchema:
+      - AttributeName: PK
+        KeyType: HASH
+      - AttributeName: SK
+        KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+      - AttributeName: PK
+        AttributeType: S
+      - AttributeName: SK
+        AttributeType: S
+  
+  JobAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: dev
+      EndpointConfiguration: REGIONAL
+      OpenApiVersion: 3.0.3
+      # Cors:
+      #   AllowMethods: "'*'"
+      #   AllowHeaders: "'*'"
+      #   AllowOrigin: "'*'"
+      DefinitionBody:
+        'Fn::Transform':
+          Name: 'AWS::Include'
+          Parameters:
+            Location: jobs-openapi.yml
 Outputs:
   EndpointUrl:
     Description: 'REST endpoint URL'
-    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/dev'
+    Value: !Sub 'https://${JobAPI}.execute-api.${AWS::Region}.amazonaws.com/dev'

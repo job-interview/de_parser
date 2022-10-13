@@ -1,0 +1,56 @@
+version: '3.9'
+services:
+  sam:
+    build: .
+    environment:
+      - TZ=Etc/GMT
+      - SAM_CLI_CONTAINER_CONNECTION_TIMEOUT=200
+      - SAM_CLI_TELEMETRY=false
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - $PWD:$PWD
+      - ./.aws/:/root/.aws:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: $PWD
+    command: ['/bin/bash', "./entrypoint.mac.sh"]
+    ports:
+      - "3000:3000"
+    networks:
+      - "backend"
+    depends_on:
+      - dynamodb-local
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    networks:
+      - "backend"
+
+  dynamodb-admin:
+    image: aaronshaf/dynamodb-admin
+    ports:
+      - "8001:8001"
+    networks:
+      - "backend"
+    environment:
+      DYNAMO_ENDPOINT: http://dynamodb-local:8000
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: local
+      AWS_SECRET_ACCESS_KEY: local 
+    depends_on:
+      - dynamodb-local
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: "swagger-ui"
+    ports:
+      - "8002:8080"
+    volumes:
+      - ./jobs-openapi.yml:/swagger.yml
+    environment:
+      SWAGGER_JSON: /swagger.yml
+
+networks:
+  backend:
+    name: aws_backend
+    driver: bridge
