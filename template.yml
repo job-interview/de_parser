@@ -94,4 +94,4 @@ Resources:
 Outputs:
   EndpointUrl:
     Description: 'REST endpoint URL'
-    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/dev'
+    Value: !Sub 'https://${JobAPI}.execute-api.${AWS::Region}.amazonaws.com/dev'
