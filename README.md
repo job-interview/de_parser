@@ -18,6 +18,7 @@ To run it locally take following steps:
 
 ### Run tests
 
+Install dependencies by running `pip install -r tests/requirements.txt`.
 Run `pytest tests/unit/` to run unit tests
 
 ### Test live
