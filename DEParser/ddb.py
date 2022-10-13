@@ -5,6 +5,7 @@ import boto3
 import logging
 import decimal
 from botocore.exceptions import ClientError
+from boto3.dynamodb.conditions import Key, Attr
 
 MINIMUM_LINE_LENGTH = 14
 logger = logging.getLogger(__name__)
@@ -41,6 +42,45 @@ class NumberProcessor:
             )
             return None
         return data.get("Item")
+    
+    def list_jobs(self):
+        table = self._get_table_client()
+        try:
+            data = table.query( KeyConditionExpression=Key('PK').eq('job'))
+            if not data.get("Items"):
+                raise KeyError
+
+        except ClientError as e:
+            logger.exception("DynamoDB Client Error!")
+            raise e
+        except KeyError as e:
+            logger.warning(
+                "PK:job not found at DB!"
+            )
+            return None
+
+        items =  data.get("Items")
+        job_ids = [item['SK'] for item in items]
+        return job_ids
+    
+    def delete_results(self, job_id):
+        table = self._get_table_client()
+        try:
+            data = table.delete_item(Key={"PK":"job_id", "SK": job_id})
+            if not data.get("Item"):
+                raise KeyError
+
+        except ClientError as e:
+            logger.exception("DynamoDB Client Error!")
+            raise e
+        except KeyError as e:
+            logger.warning(
+                "Job not found at DB! JobId: {JobId}".format(JobId=job_id)
+            )
+            return None
+        job_id = self._remove_job_list(job_id=job_id)
+
+        return job_id
 
     def _put_results(self, job_id, numbers):
         table = self._get_table_client()
@@ -71,6 +111,19 @@ class NumberProcessor:
         else:
             logger.warning(
                 "JobId: {job_id} added to the processed jobs list".format(job_id=job_id)
+            )
+            return job_id
+    
+    def _remove_job_list(self, job_id):
+        table = self._get_table_client()
+        try:
+            table.delete_item(Item={"PK": "job", "SK": job_id})
+        except ClientError as e:
+            logger.exception("DynamoDB Client Error!")
+            raise e
+        else:
+            logger.warning(
+                "JobId: {job_id} removed from processed jobs list".format(job_id=job_id)
             )
             return job_id
 
