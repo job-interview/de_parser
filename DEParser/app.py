@@ -5,7 +5,6 @@ MINIMUM_LINE_LENGTH = 14
 
 
 def lambda_handler(event, context):
-    print(json.dumps(event))
     operation_name = event["requestContext"]["operationName"]
     http_method = event["httpMethod"]
     if http_method == "GET" and operation_name == "getJobById":
