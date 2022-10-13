@@ -1,4 +1,3 @@
-import json
 from ddb import NumberProcessor
 
 MINIMUM_LINE_LENGTH = 14
